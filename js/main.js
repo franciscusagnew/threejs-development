@@ -78,7 +78,7 @@ function update( renderer, scene, camera ) {
 	);
 
 	var cube = scene.getObjectByName('cube-1');
-	cube.rotation.y += 0.01;
+	cube.rotation.y += 0.05;
 
 	requestAnimationFrame( function() {
 		update( renderer, scene, camera );
