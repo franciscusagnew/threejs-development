@@ -4,6 +4,9 @@ function init() {
 	var cube = getBox( 1, 1, 1 );
 	var plane = getPlane( 10 );
 
+  cube.name = 'cube-1';
+	plane.name = 'plane-1';
+
 	cube.position.y = cube.geometry.parameters.height / 2;
 	plane.rotation.x = Math.PI / 2;
 
@@ -73,6 +76,9 @@ function update( renderer, scene, camera ) {
 		scene,
 		camera
 	);
+
+	var cube = scene.getObjectByName('cube-1');
+	cube.rotation.y += 0.01;
 
 	requestAnimationFrame( function() {
 		update( renderer, scene, camera );
