@@ -1,8 +1,13 @@
 function init() {
 	var scene = new THREE.Scene();
+	var enableFog = true;
+
+	if (enableFog) {
+		scene.fog = new THREE.FogExp2( '#fff', 0.2 );
+	}
 
 	var cube = getBox( 1, 1, 1 );
-	var plane = getPlane( 10 );
+	var plane = getPlane( 20 );
 
   cube.name = 'cube-1';
 	plane.name = 'plane-1';
@@ -31,6 +36,7 @@ function init() {
 	var renderer = new THREE.WebGLRenderer();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setClearColor('#ffffff');
 	// document.getElementById('webgl').appendChild(renderer.domElement);
 	document.body.appendChild( renderer.domElement );
 	update( renderer, scene, camera );
