@@ -1,29 +1,39 @@
+function init() {
+	var scene = new THREE.Scene();
 
-var scene = new THREE.Scene();
+	var cube = getBox( 1, 1, 1 );
+	var plane = getPlane( 10 );
 
-var box = getBox( 1, 1, 1 );
-var plane = getPlane( 10 );
+	cube.position.y = cube.geometry.parameters.height / 2;
+	plane.rotation.x = Math.PI / 2;
 
-box.position.y = box.geometry.parameters.height / 2;
-plane.rotation.x = Math.PI / 2;
+	scene.add(cube);
+	scene.add(plane);
 
-scene.add(box);
-scene.add(plane);
+	// Three.js Perspective Camera
+	var camera = new THREE.PerspectiveCamera(
+		45, // field of view
+		window.innerWidth / window.innerHeight, // aspect ratio
+		1, // near clipping plane
+		1000  // far clipping plane
+	);
 
-// Three.js Perspective Camera
-var camera = new THREE.PerspectiveCamera(
-	45, // field of view
-	window.innerWidth / window.innerHeight, // aspect ratio
-	1, // near clipping plane
-	1000  // far clipping plane
-);
+	camera.position.z = 5;
+	camera.position.x = 0;
+	camera.position.y = 2;
 
-// WEbGL Rendering
-var renderer = new THREE.WebGLRenderer();
+	camera.lookAt(new THREE.Vector3( 0, 0, 0 ));
 
-renderer.setSize( window.innerWidth, window.innerHeight );
-// document.getElementById('webgl').appendChild(renderer.domElement);
-document.body.appendChild( renderer.domElement );
+	// WEbGL Rendering
+	var renderer = new THREE.WebGLRenderer();
+
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	// document.getElementById('webgl').appendChild(renderer.domElement);
+	document.body.appendChild( renderer.domElement );
+	update( renderer, scene, camera );
+
+	return scene;
+}
 
 function getBox( width, height, depth ) {
 	var geometry = new THREE.BoxGeometry( 1, 1, 1 );
@@ -50,27 +60,23 @@ function getPlane( size ) {
 		}
 	);
 
-	var mesh = new THREE.Mesh(
+	var plane = new THREE.Mesh(
 		geometry,
 		material
 	);
 
-	return mesh;
+	return plane;
 }
 
-camera.position.z = 5;
-camera.position.x = 0;
-camera.position.y = 2;
+function update( renderer, scene, camera ) {
+	renderer.render(
+		scene,
+		camera
+	);
 
-camera.lookAt(new THREE.Vector3( 0, 0, 0 ));
+	requestAnimationFrame( function() {
+		update( renderer, scene, camera );
+	});
+}
 
-var animate = function () {
-	requestAnimationFrame( animate );
-
-	box.rotation.x += 0.0;
-	box.rotation.y += 0.0;
-
-	renderer.render( scene, camera );
-};
-
-animate();
+var scene = init();
